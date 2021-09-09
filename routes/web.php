@@ -21,7 +21,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::group(['prefix' => 'plant'], function () {
+Route::group(['prefix' => 'plants'], function () {
     Route::get('', [PlantController::class, 'index'])->name('plant.index');
     Route::get('create', [PlantController::class, 'create'])->name('plant.create');
     Route::post('store', [PlantController::class, 'store'])->name('plant.store');
@@ -31,7 +31,7 @@ Route::group(['prefix' => 'plant'], function () {
     Route::get('show/{plant}', [PlantController::class, 'show'])->name('plant.show');
 });
 
-Route::group(['prefix' => 'uniquePlant'], function () {
+Route::group(['prefix' => 'uniquePlants'], function () {
     Route::get('', [UniquePlantController::class, 'index'])->name('uniquePlant.index');
     Route::get('create', [UniquePlantController::class, 'create'])->name('uniquePlant.create');
     Route::post('store', [UniquePlantController::class, 'store'])->name('uniquePlant.store');
