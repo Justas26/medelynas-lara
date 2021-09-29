@@ -6,6 +6,7 @@ use App\Models\UniquePlant;
 use Illuminate\Http\Request;
 use App\Models\Plant;
 use Illuminate\Validation\Rules\Unique;
+use Validator;
 
 class UniquePlantController extends Controller
 {
@@ -43,6 +44,26 @@ class UniquePlantController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'age' => ['required', 'digits_between:0,9'],
+                'height' => ['required', 'digits_between:0,9'],
+                'health' => ['required', 'digits_between:0,9'],
+            ],
+            [
+                'age.required' => 'unikalaus augalo amzius privalomas',
+                'height.required' => 'unikalaus augalo aukstis privalomas',
+                'health.required' => 'unikalaus augalo sveikata privaloma',
+                'age.digits_between' => 'netinkamas unikalaus augalo amziaus formatas',
+                'height.digits_between' => 'netinkamas unikalaus augalo aukstis formatas',
+                'health.digits_between' => 'netinkamas unikalaus augalo sveikatos formatas',
+            ]
+        );
+        if ($validator->fails()) {
+            $request->flash();
+            return redirect()->back()->withErrors($validator);
+        }
         $uniquePlant = new UniquePlant();
         $uniquePlant->age = $request->age;
         $uniquePlant->height = $request->height;
@@ -84,6 +105,26 @@ class UniquePlantController extends Controller
      */
     public function update(Request $request, UniquePlant $uniquePlant)
     {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'age' => ['required', 'digits_between:0,9'],
+                'height' => ['required', 'digits_between:0,9'],
+                'health' => ['required', 'digits_between:0,9'],
+            ],
+            [
+                'age.required' => 'unikalaus augalo amzius privalomas',
+                'height.required' => 'unikalaus augalo aukstis privalomas',
+                'health.required' => 'unikalaus augalo sveikata privaloma',
+                'age.digits_between' => 'netinkamas unikalaus augalo amziaus formatas',
+                'height.digits_between' => 'netinkamas unikalaus augalo aukstis formatas',
+                'health.digits_between' => 'netinkamas unikalaus augalo sveikatos formatas',
+            ]
+        );
+        if ($validator->fails()) {
+            $request->flash();
+            return redirect()->back()->withErrors($validator);
+        }
         $uniquePlant->age = $request->age;
         $uniquePlant->height = $request->height;
         $uniquePlant->health = $request->health;

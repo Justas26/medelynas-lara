@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Plant;
 use Illuminate\Http\Request;
+use Validator;
 
 class PlantController extends Controller
 {
@@ -40,6 +41,24 @@ class PlantController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => ['required', 'min:3', 'max:32'],
+
+            ],
+            [
+                'name.required' => 'augalo vardas privalomas',
+                'name.min' => 'per trumpas augalo vardas',
+                'name.max' => 'per ilgas augalo vardas',
+
+
+            ]
+        );
+        if ($validator->fails()) {
+            $request->flash();
+            return redirect()->back()->withErrors($validator);
+        }
         $plant = new Plant;
         $plant->name = $request->name;
         $is_yearling = 'off';
@@ -82,6 +101,24 @@ class PlantController extends Controller
      */
     public function update(Request $request, Plant $plant)
     {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => ['required', 'min:3', 'max:32'],
+
+            ],
+            [
+                'name.required' => 'augalo vardas privalomas',
+                'name.min' => 'per trumpas augalo vardas',
+                'name.max' => 'per ilgas augalo vardas',
+
+
+            ]
+        );
+        if ($validator->fails()) {
+            $request->flash();
+            return redirect()->back()->withErrors($validator);
+        }
         $plant->name = $request->name;
         $plant->is_yearling = $request->is_yearling;
         $plant->save();
