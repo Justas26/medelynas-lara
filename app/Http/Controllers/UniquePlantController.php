@@ -9,6 +9,10 @@ use Illuminate\Validation\Rules\Unique;
 
 class UniquePlantController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index');
+    }
     /**
      * Display a listing of the resource.
      *
